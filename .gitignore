@@ -1,0 +1,21 @@
+# Java / Spring
+**/target/
+*.class
+
+# IntelliJ
+.idea/
+*.iml
+
+# Node
+**/node_modules/
+**/dist/
+
+# Environment
+.env
+
+# Logs
+*.log
+
+# Spring secrets
+**/application-local.properties
+
