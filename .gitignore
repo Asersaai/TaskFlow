@@ -17,5 +17,5 @@
 *.log
 
 # Spring secrets
-**/application-local.properties
+**/application-local.env
 

@@ -1,0 +1,13 @@
+.status-completed{
+    color: green;
+}
+.status-in-progress{
+    color: #da0202;
+}
+.card{
+    margin-bottom: 15px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    background-color: #c5c5c5;
+}
