@@ -1,29 +1,32 @@
 import Sidebar from "../components/Sidebar.tsx";
 import "../style/Dashboard.css";
 import TaskCard from "../components/TaskCard.tsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
+interface Task{
+    id:number;
+    title:string;
+    description:string;
+    completed:boolean;
+}
+
 
 function Dashboard(){
-    const tasks = [
-        {
-            id: 1,
-            title: "Run",
-            description: "09:00",
-            completed: true
-        },
-        {
-            id: 2,
-            title: "Learn React",
-            description: "Study useState",
-            completed: false
-        },
-        {
-            id: 3,
-            title: "Spring Boot",
-            description: "Create REST API",
-            completed: false
-        }
-    ];
+
+    const [tasks,setTasks]= useState<Task[]>([]);
+
+    useEffect(() =>{
+
+        axios.get("http://localhost:8080/api/tasks").then(response => {
+            setTasks(response.data);
+        }).catch(error =>{
+            console.log(error)
+        })
+
+        },[])
+
     return(
+
 
         <div className="main_container">
             <div className="main_container-sidebar"><Sidebar/></div>
