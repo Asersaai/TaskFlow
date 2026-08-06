@@ -1,4 +1,5 @@
 import "../style/Sidebar.css";
+import {Link} from "react-router-dom";
 
 function Sidebar(){
 
@@ -7,9 +8,10 @@ function Sidebar(){
             <h2>TaskFlow</h2>
 
             <ul>
-                <li className="sidebar_string">My Tasks</li>
-                <li className="sidebar_string">Completed</li>
-                <li className="sidebar_string">Settings</li>
+                <li className="sidebar_string"><Link to="/dashboard" >Dashboard</Link></li>
+                <li className="sidebar_string"><Link to="/tasks">Tasks</Link></li>
+                <li className="sidebar_string">Teams</li>
+                <li className="sidebar_string"><Link to="/settings">Settings</Link></li>
             </ul>
 
         </aside>

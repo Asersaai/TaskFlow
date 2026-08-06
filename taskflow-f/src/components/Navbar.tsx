@@ -13,8 +13,6 @@ function Navbar(props:NavbarProps){
          <h4 className="name-user">{props.lastname} {props.firstname}</h4>
 
          <ul className="nav_container">
-             <li  className="nav_links1"> <Link to="/" className="header_string">Home</Link></li>
-             <li className="nav_links1"><Link to="/dashboard" className="header_string">Dashboard</Link></li>
          </ul>
             <Link to="/login" className="login">Login</Link>
         </header>

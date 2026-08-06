@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+button {
+    user-select: none;
+    outline: none;
+    border: none;
+    background: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.continer_tasks_top {
+    display: flex;
+    align-items: center;
+}
+
+.continer_tasks_top_button {
+    margin-left: auto;
+    padding: 12px 24px;
+    background-color: #1930ca;
+    color: #ffffff;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.continer_tasks_top_button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px #043dfb,
+    0 0 25px #1349bd,
+    0 0 50px #073998;
+}
+
+.continer_tasks_top_button:active {
+    transform: scale(0.98);
+}
+
+.modal_overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal_content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    min-width: 300px;
+}
+.modal_button_exit {
+    background-color: #595757;
+    padding: 7px 8px;
+    border-radius: 10px;
+    margin-right:10px ;
+    transition: 0.5s;
+    margin-block: 7px;
+}
+.modal_button_post_or_exit{
+    display: flex;
+    margin-top: 15px;
+    align-content: center;
+}
+.modal_button_post{
+    background-color: #595757;
+    border-radius: 10px;
+    padding: 7px 8px;
+    margin-left: auto;
+    transition: 0.5s;
+    margin-block: 7px;
+
+}
+.modal_button_exit:hover{
+    background-color: #da0202;
+    padding: 9px 9px;
+    margin-block: 5px;
+}
+.modal_button_post:hover{
+    background-color: #007fff;
+    padding: 9px 9px;
+    margin-block: 5px;
+
+}
+.input-group {
+    position: relative;
+    margin: 20px 0;
+}
+
+.input {
+    font-size: 16px;
+    padding: 10px 10px 10px 5px;
+    display: block;
+    width: 200px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    background: transparent;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.user-label {
+    color: #999;
+    font-size: 16px;
+    position: absolute;
+    pointer-events: none;
+    left: 5px;
+    top: 10px;
+    transition: 0.2s ease all;
+}
+
+.input:focus ~ .user-label,
+.input:not(:placeholder-shown) ~ .user-label {
+    top: -12px;
+    font-size: 12px;
+    color: #000000;
+    font-weight: bold;
+}
+
+.input:focus {
+    border-bottom: 2px solid #000000;
+}
+
+
