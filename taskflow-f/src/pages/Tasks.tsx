@@ -3,7 +3,7 @@ import axios from "axios";
 import TaskCard from "../components/TaskCard.tsx";
 import "../style/Tasks.css";
 
-interface Tasks {
+interface Task {
     id: number;
     title: string;
     description: string;
@@ -13,12 +13,17 @@ interface Tasks {
 function Tasks() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [tasks, setTasks] = useState<Tasks[]>([]);
+    const [tasks, setTasks] = useState<Task[]>([]);
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
 
-    const fetchTasks=() => {
-        axios.get("http://localhost:8080/api/tasks").then((response) => setTasks(response.data)).catch((error) => console.log(error));
+    const fetchTasks=async () => {
+        try{
+            const responce= await axios.get("http://localhost:8080/api/task",)
+            setTasks(responce.data)
+        }catch (error){
+            console.log("Ошибка при получении задач:",error)
+        }
     }
 
     const handleSubmit= async (e: FormEvent) =>{
@@ -37,15 +42,11 @@ function Tasks() {
             console.error("Ошибка при отправке:", error);
         }}
 
-    useEffect(() => {
-        axios
-            .get("http://localhost:8080/api/tasks")
-            .then((response) => {
-                setTasks(response.data);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+
+
+
+    useEffect ( () => {
+        axios.get("http://localhost:8080/api/task").then((responce) => setTasks(responce.data)).catch((error) => console.log("Ошибка при получении задач:",error))
     }, []);
 
     return (
@@ -64,9 +65,11 @@ function Tasks() {
                 {tasks.map((task) => (
                     <TaskCard
                         key={task.id}
+                        id={task.id}
                         title={task.title}
                         description={task.description}
                         completed={task.completed}
+                        onUpdate={fetchTasks}
                     />
                 ))}
             </div>
@@ -93,6 +96,7 @@ function Tasks() {
                     </div>
                 </div>
             )}
+
         </div>
     );
 }

@@ -22,7 +22,7 @@ public class TestController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/tasks")
+    @GetMapping("/task")
     public List<Task> getTasks(){
         return taskService.getAllTasks();
     }
@@ -33,6 +33,25 @@ public class TestController {
     public ResponseEntity<Void> saveTask(@RequestBody CreateTaskRequest request){
         taskService.saveTask(request.title(),request.description());
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @DeleteMapping("/task/{id}")
+    public ResponseEntity<Void> deleteTask(@PathVariable Integer id){
+        System.out.println("delete");
+        taskService.deleteTask(id);
+        return ResponseEntity.noContent().build();
+    }
+    public record PathTaskRequest(String title, String description,boolean completed) {}
+
+
+    @PatchMapping("/task/{id}")
+    public ResponseEntity<Void> editTask(@RequestBody PathTaskRequest request, @PathVariable Integer id){
+        System.out.println("edit");
+        System.out.println(request.title);
+        System.out.println(request.description);
+        System.out.println(request.completed);
+        taskService.updateTask(id,request.title,request.description,request.completed);
+        return ResponseEntity.noContent().build();
     }
 
 }

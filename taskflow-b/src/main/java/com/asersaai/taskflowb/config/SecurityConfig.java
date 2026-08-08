@@ -1,4 +1,4 @@
-package com.asersaai.taskflowb.security;
+package com.asersaai.taskflowb.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,8 +21,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> {})
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/tasks").permitAll()
-                        .requestMatchers("/api/task").permitAll()
+                        .requestMatchers("/api/task/**").permitAll()
+
+
 
                         .anyRequest().authenticated()
                 );
@@ -41,7 +42,7 @@ public class SecurityConfig {
         );
 
         configuration.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "DELETE")
+                List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
         );
 
         configuration.setAllowedHeaders(
