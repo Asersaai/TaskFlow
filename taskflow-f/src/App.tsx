@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Settings from "./pages/Settings.tsx";
 import Sidebar from "./components/Sidebar.tsx";
 import Navbar from "./components/Navbar.tsx";
+import ProtectedRoute from "./ProtectedRoute.tsx";
 
 function App() {
 
@@ -25,13 +26,28 @@ function App() {
                 <main className="content_app">
           <Routes>
 
+              <Route path="/" element={<Login/>}/>
               <Route path="/login" element={<Login/>}/>
 
               <Route path="/register" element={<Register/>}/>
 
-              <Route path="/" element={<Dashboard/>}/>
-              <Route path="/settings" element={<Settings/>}/>
-              <Route path="/tasks" element={<Tasks/>}/>
+              <Route path="/dashboard" element={
+                  <ProtectedRoute>
+                      <Dashboard/>
+                  </ProtectedRoute>
+              }/>
+
+              <Route path="/settings" element={
+                  <ProtectedRoute>
+                      <Settings/>
+                  </ProtectedRoute>
+              }/>
+
+              <Route path="/tasks" element={
+                  <ProtectedRoute>
+                      <Tasks/>
+                  </ProtectedRoute>
+              }/>
 
           </Routes>
 

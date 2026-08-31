@@ -1,0 +1,29 @@
+
+.login_card{
+    background: black;
+    margin: 60px;
+    display: flex;
+    flex-direction: column;
+}
+input[type="email"],
+input[type="text"],
+input[type="password"] {
+    box-sizing: border-box;
+    margin: 10px;
+    width: 60%;
+    margin-left: 18%;
+    border-radius: 10px;
+    padding: 8px;
+}
+.button_login{
+    background: white;
+    width: 50px;
+    border-radius: 10px;
+    margin: 2%;
+    transition: 0.5s;
+}
+.button_login:hover{
+    background: #818181;
+    width: 60px;
+
+}

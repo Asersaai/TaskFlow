@@ -1,11 +1,13 @@
 package com.asersaai.taskflowb.service;
 
+import com.asersaai.taskflowb.dto.response.AccessToken;
+import com.asersaai.taskflowb.dto.response.TaskResponse;
 import com.asersaai.taskflowb.entity.Task;
+import com.asersaai.taskflowb.entity.User;
 import com.asersaai.taskflowb.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,34 +15,49 @@ import java.util.List;
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final UserService userService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserService userService, JwtService jwtService) {
         this.taskRepository = taskRepository;
+
+        this.userService = userService;
+
     }
 
-    public List<Task> getAllTasks(){
-        return taskRepository.findAllByOrderByIdAsc();
+    public List<TaskResponse> getTasks( ){
+
+        return taskRepository.findTasksByUser(userService.getCurrentUser());
     }
 
     public void saveTask(String title,String description){
-        taskRepository.save(new Task(title,description));
+
+        taskRepository.save(new Task(title,description,userService.getCurrentUser()));
     }
 
     public void deleteTask(Integer id){
+        Task task = taskRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        if(!task.getUser().getId().equals(userService.getCurrentUser().getId())){
+            throw new EntityNotFoundException("Task not found");
+        }
         taskRepository.deleteById(id);
+
     }
 
     @Transactional
-    public void updateTask(Integer id, String title, String description,boolean completed) {
+    public void updateTask(Integer id, String title, String description,Boolean completed) {
         Task task = taskRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Task not found"));
+        if(!task.getUser().getId().equals(userService.getCurrentUser().getId())){
+            throw new EntityNotFoundException("Task not found");}
         if(!(title==null)&&!(description==null)){
             task.setTitle(title);
             task.setDescription(description);
         }else{
             task.setCompleted(completed);
-    }
+
+        }
     }
 
 }

@@ -2,6 +2,7 @@ import { useState, useEffect,type FormEvent } from "react";
 import axios from "axios";
 import TaskCard from "../components/TaskCard.tsx";
 import "../style/Tasks.css";
+import {api} from "../api/api.ts";
 
 interface Task {
     id: number;
@@ -19,7 +20,7 @@ function Tasks() {
 
     const fetchTasks=async () => {
         try{
-            const responce= await axios.get("http://localhost:8080/api/task",)
+            const responce= await api.get("/task");
             setTasks(responce.data)
         }catch (error){
             console.log("Ошибка при получении задач:",error)
@@ -45,8 +46,12 @@ function Tasks() {
 
 
 
-    useEffect ( () => {
-        axios.get("http://localhost:8080/api/task").then((responce) => setTasks(responce.data)).catch((error) => console.log("Ошибка при получении задач:",error))
+    useEffect(() => {
+        api.get("/task")
+            .then((response) => setTasks(response.data))
+            .catch((error) =>
+                console.log("Ошибка при получении задач:", error)
+            );
     }, []);
 
     return (

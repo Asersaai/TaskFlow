@@ -1,6 +1,8 @@
 package com.asersaai.taskflowb.repository;
 
+import com.asersaai.taskflowb.dto.response.TaskResponse;
 import com.asersaai.taskflowb.entity.Task;
+import com.asersaai.taskflowb.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +15,6 @@ public interface TaskRepository extends JpaRepository<Task, Integer> {
 
 
     List<Task> findAllByOrderByIdAsc();
+
+    List<TaskResponse> findTasksByUser(User user);
 }
