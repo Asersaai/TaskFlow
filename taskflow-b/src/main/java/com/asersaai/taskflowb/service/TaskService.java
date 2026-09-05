@@ -16,7 +16,7 @@ public class TaskService {
     private final UserService userService;
 
     @Autowired
-    public TaskService(TaskRepository taskRepository, UserService userService, JwtService jwtService) {
+    public TaskService(TaskRepository taskRepository, UserService userService) {
         this.taskRepository = taskRepository;
         this.userService = userService;
 
