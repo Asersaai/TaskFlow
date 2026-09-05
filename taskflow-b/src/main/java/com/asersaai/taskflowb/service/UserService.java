@@ -6,6 +6,7 @@ import com.asersaai.taskflowb.dto.response.LoginResponse;
 import com.asersaai.taskflowb.entity.User;
 import com.asersaai.taskflowb.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,10 @@ public class UserService {
     }
     public User findUser(LoginRequest request) {
         User user = findUserByEmail(request.email())
-                .orElseThrow(() -> new RuntimeException("Invalid email or password"));
+                .orElseThrow(() -> new BadCredentialsException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.password(), user.getPassword())) {
-            throw new RuntimeException("Invalid email or password");
+            throw new BadCredentialsException("Invalid email or password");
         }
 
         return user;
@@ -46,7 +47,7 @@ public class UserService {
 
     public User register(RegisterRequest request){
         if (findUserByEmail(request.email()).isPresent()){
-            throw new RuntimeException("Email already exists");
+            throw new IllegalStateException("Email already exists");
         }
 
         String encodePassword=passwordEncoder.encode(request.password());

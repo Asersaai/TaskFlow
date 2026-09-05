@@ -1,61 +1,35 @@
 import './App.css'
 import {Route,Routes,BrowserRouter} from "react-router-dom";
-import Tasks from "./pages/Tasks.tsx";
+
 import Register from "./pages/Register";
 import Login from "./pages/Login";
-import Dashboard from "./pages/Dashboard";
+
+import PublicLayout from "./layouts/PublicLayout.tsx";
+import AppLayout from "./layouts/AppLayout.tsx";
+import Tasks from "./pages/Tasks.tsx";
+import Dashboard from "./pages/Dashboard.tsx";
 import Settings from "./pages/Settings.tsx";
-import Sidebar from "./components/Sidebar.tsx";
-import Navbar from "./components/Navbar.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
 
 function App() {
 
   return (
-
     <BrowserRouter>
-        <div className="app">
-            <aside className="sidebar_app">
-                <Sidebar/>
-            </aside>
+                    <Routes>
+                        <Route element={<PublicLayout />}>
+                            <Route path="/" element={<Login />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                        </Route>
 
-            <div className="main_app">
-                <header className="navbar_app">
-                    <Navbar firstname={"s"} lastname={"a"}/>
-                </header>
-                <main className="content_app">
-          <Routes>
-
-              <Route path="/" element={<Login/>}/>
-              <Route path="/login" element={<Login/>}/>
-
-              <Route path="/register" element={<Register/>}/>
-
-              <Route path="/dashboard" element={
-                  <ProtectedRoute>
-                      <Dashboard/>
-                  </ProtectedRoute>
-              }/>
-
-              <Route path="/settings" element={
-                  <ProtectedRoute>
-                      <Settings/>
-                  </ProtectedRoute>
-              }/>
-
-              <Route path="/tasks" element={
-                  <ProtectedRoute>
-                      <Tasks/>
-                  </ProtectedRoute>
-              }/>
-
-          </Routes>
-
-                </main>
-            </div>
-        </div>
-
-
+                        <Route element={<ProtectedRoute>
+                            <AppLayout />
+                        </ProtectedRoute>}>
+                            <Route path="/tasks" element={<Tasks />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/settings" element={<Settings />} />
+                        </Route>
+                    </Routes>
       </BrowserRouter>
   )
 

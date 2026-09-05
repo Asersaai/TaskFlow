@@ -1,6 +1,6 @@
 import "../style/TaskCard.css";
-import axios from "axios";
 import {type FormEvent, type MouseEvent, useState} from "react";
+import {api} from "../api/api.ts";
 
 interface TaskCardProps{
     id:number;
@@ -21,9 +21,10 @@ function TaskCard(card:TaskCardProps){
     const completedButton=async (e:FormEvent) =>{
         e.preventDefault()
         try {
-            setCompleted(!completed)
-            await axios.patch(`http://localhost:8080/api/task/${card.id}`,{
-                completed
+            const nextCompleted = !completed;
+            setCompleted(nextCompleted);
+            await api.patch(`/task/${card.id}`,{
+                completed: nextCompleted
             })
             if (card.onUpdate){
                 card.onUpdate(card.id);
@@ -37,7 +38,7 @@ function TaskCard(card:TaskCardProps){
     const handleSubmit=async (e: FormEvent)=>{
         e.preventDefault();
     try {
-        await axios.patch(`http://localhost:8080/api/task/${card.id}`,{
+        await api.patch(`/task/${card.id}`,{
             title,
             description
         })
@@ -56,7 +57,7 @@ function TaskCard(card:TaskCardProps){
         const deleteButton=async (e: MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault();
         try {
-            await axios.delete(`http://localhost:8080/api/task/${card.id}`)
+            await api.delete(`/task/${card.id}`)
             if(card.onUpdate){
                 card.onUpdate(card.id)
             }

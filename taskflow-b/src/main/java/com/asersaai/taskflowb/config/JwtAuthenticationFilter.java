@@ -3,6 +3,7 @@ package com.asersaai.taskflowb.config;
 import com.asersaai.taskflowb.entity.User;
 import com.asersaai.taskflowb.service.JwtService;
 import com.asersaai.taskflowb.service.UserService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,23 +33,33 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 
         String authHeader = request.getHeader("Authorization");
-        if(authHeader != null && authHeader.startsWith("Bearer ")){
-            String token=authHeader.substring(7);
-            String tokenType=jwtService.extractTokenType(token);
-            if("ACCESS".equals(tokenType)){
-                String email = jwtService.extractEmail(token);
-                User user=userService.findUserByEmail(email)
-                        .orElseThrow();
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                email,
-                                null,
-                                List.of(user.getRole().toAuthority())
-                        );
-                SecurityContextHolder.getContext()
-                        .setAuthentication(authentication);
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+
+            try {
+                String tokenType = jwtService.extractTokenType(token);
+
+                if ("ACCESS".equals(tokenType)) {
+                    String email = jwtService.extractEmail(token);
+                    User user = userService.findUserByEmail(email)
+                            .orElseThrow();
+
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    email,
+                                    null,
+                                    List.of(user.getRole().toAuthority())
+                            );
+
+                    SecurityContextHolder.getContext()
+                            .setAuthentication(authentication);
+                }
+            } catch (JwtException exception) {
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                return;
             }
         }
+
 
         filterChain.doFilter(request, response);
 

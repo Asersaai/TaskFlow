@@ -8,7 +8,10 @@ type AuthStore = {
 
 export const useAuthStore = create<AuthStore>((set) => ({
     token: localStorage.getItem("accessToken"),
-    setToken: (token) => set({token}),
+    setToken: (token) => {
+        localStorage.setItem("accessToken", token);
+        set({ token });
+    },
     logout:() => {
         set({token:null});
         localStorage.removeItem("accessToken");

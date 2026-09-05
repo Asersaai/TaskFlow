@@ -1,5 +1,4 @@
 import { useState, useEffect,type FormEvent } from "react";
-import axios from "axios";
 import TaskCard from "../components/TaskCard.tsx";
 import "../style/Tasks.css";
 import {api} from "../api/api.ts";
@@ -30,7 +29,7 @@ function Tasks() {
     const handleSubmit= async (e: FormEvent) =>{
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8080/api/task",{
+            await api.post("/task",{
                 title,
                 description
             });
@@ -55,7 +54,7 @@ function Tasks() {
     }, []);
 
     return (
-        <div>
+        <section className="tasks-page">
             <div className="continer_tasks_top">
                 <div>
                     <h1>Tasks Board</h1>
@@ -66,7 +65,7 @@ function Tasks() {
                 </div>
             </div>
 
-            <div>
+            <div className="task-list">
                 {tasks.map((task) => (
                     <TaskCard
                         key={task.id}
@@ -102,7 +101,7 @@ function Tasks() {
                 </div>
             )}
 
-        </div>
+        </section>
     );
 }
 

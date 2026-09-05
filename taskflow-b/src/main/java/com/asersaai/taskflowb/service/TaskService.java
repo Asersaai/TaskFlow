@@ -51,12 +51,14 @@ public class TaskService {
                 .orElseThrow(() -> new EntityNotFoundException("Task not found"));
         if(!task.getUser().getId().equals(userService.getCurrentUser().getId())){
             throw new EntityNotFoundException("Task not found");}
-        if(!(title==null)&&!(description==null)){
+        if (title != null) {
             task.setTitle(title);
+        }
+        if (description != null) {
             task.setDescription(description);
-        }else{
+        }
+        if (completed != null) {
             task.setCompleted(completed);
-
         }
     }
 

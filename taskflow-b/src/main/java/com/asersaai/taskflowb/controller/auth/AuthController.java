@@ -7,9 +7,11 @@ import com.asersaai.taskflowb.dto.request.RefreshTokenRequest;
 import com.asersaai.taskflowb.entity.User;
 import com.asersaai.taskflowb.service.JwtService;
 import com.asersaai.taskflowb.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,22 +27,23 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public LoginResponse register(@RequestBody RegisterRequest request){
+    public LoginResponse register(@Valid @RequestBody RegisterRequest request){
         User user=userService.register(request);
         return new LoginResponse(jwtService.generateToken(user.getEmail()), jwtService.generateRefreshToken(user.getEmail()));
 
     }
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request){
+    public LoginResponse login(@Valid @RequestBody LoginRequest request){
         User user=userService.findUser(request);
         return new LoginResponse(jwtService.generateToken(user.getEmail()), jwtService.generateRefreshToken(user.getEmail()));
     }
     @PostMapping("/refresh")
-    public LoginResponse refresh(@RequestBody RefreshTokenRequest refresh){
+    public LoginResponse refresh(@Valid @RequestBody RefreshTokenRequest refresh){
         String tokenType=jwtService.extractTokenType(refresh.refreshToken());
 
         if(!"REFRESH".equals(tokenType)){
-            throw new RuntimeException("поддельный токен");
+            throw new BadCredentialsException("Invalid refresh token");
+
         }
 
         String email=jwtService.extractEmail(refresh.refreshToken());

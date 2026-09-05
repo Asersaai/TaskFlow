@@ -1,8 +1,8 @@
 import {type FormEvent, useState} from "react";
-import axios from "axios";
 import "../style/Login.css";
 import {useAuthStore} from "../store/authStore.ts";
 import {useNavigate} from "react-router-dom";
+import {publicApi} from "../api/api.ts";
 
 function Register(){
 
@@ -11,11 +11,13 @@ function Register(){
     const [name,setName]=useState("");
     const setToken=useAuthStore((state) => state.setToken)
     const navigate=useNavigate();
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit= async (e: FormEvent) =>{
         e.preventDefault();
+        setErrorMessage("");
         try {
-            const response=await axios.post("http://localhost:8080/api/register",{
+            const response=await publicApi.post("/register",{
                 name,
                 email,
                 password
@@ -23,17 +25,18 @@ function Register(){
             const { accessToken, refreshToken } = response.data;
 
             setToken(accessToken);
-            localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             navigate("/tasks")
 
         }catch (error) {
-            console.error("Ошибка при отправке:", error);
+            setErrorMessage("Registration failed");
+            console.error(error);
         }}
 
     return(
         <div>
             <h1>Register</h1>
+            {errorMessage && <p>{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <div className={"login_card"}>
                     <input

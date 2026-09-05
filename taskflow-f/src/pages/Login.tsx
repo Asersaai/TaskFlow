@@ -2,7 +2,7 @@ import {type FormEvent, useState} from "react";
 import "../style/Login.css";
 import {useAuthStore} from "../store/authStore.ts";
 import { useNavigate } from "react-router-dom";
-import {api} from "../api/api.ts";
+import {publicApi} from "../api/api.ts";
 
 function Login(){
 
@@ -10,27 +10,29 @@ function Login(){
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
     const setToken = useAuthStore((state) => state.setToken);
-
+    const [errorMessage, setErrorMessage] = useState("");
 
     const handleSubmit= async (e: FormEvent) =>{
         e.preventDefault();
+        setErrorMessage("");
         try {
-            const response=await api.post("/login",{
+            const response=await publicApi.post("/login",{
                 email,
                 password
             });
             const { accessToken, refreshToken } = response.data;
             setToken(accessToken);
-            localStorage.setItem("accessToken", accessToken);
             localStorage.setItem("refreshToken", refreshToken);
             navigate("/tasks")
         }catch (error) {
-            console.error("Ошибка при отправке:", error);
+            setErrorMessage("Invalid email or password");
+            console.error(error);
         }}
 
     return(
         <div>
         <h1>Login</h1>
+            {errorMessage && <p>{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
             <div className={"login_card"}>
             <input
