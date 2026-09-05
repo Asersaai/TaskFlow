@@ -1,9 +1,7 @@
 package com.asersaai.taskflowb.service;
 
-import com.asersaai.taskflowb.dto.response.AccessToken;
 import com.asersaai.taskflowb.dto.response.TaskResponse;
 import com.asersaai.taskflowb.entity.Task;
-import com.asersaai.taskflowb.entity.User;
 import com.asersaai.taskflowb.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -20,14 +18,13 @@ public class TaskService {
     @Autowired
     public TaskService(TaskRepository taskRepository, UserService userService, JwtService jwtService) {
         this.taskRepository = taskRepository;
-
         this.userService = userService;
 
     }
 
     public List<TaskResponse> getTasks( ){
 
-        return taskRepository.findTasksByUser(userService.getCurrentUser());
+        return taskRepository.findTasksByUserOrderByIdAsc(userService.getCurrentUser());
     }
 
     public void saveTask(String title,String description){

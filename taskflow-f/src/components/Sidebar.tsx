@@ -10,7 +10,6 @@ function Sidebar(){
             <ul className="sidebar-menu">
                 <li className="sidebar_string"><Link to="/dashboard">⌂ <span>Dashboard</span></Link></li>
                 <li className="sidebar_string"><Link to="/tasks">✓ <span>My tasks</span></Link></li>
-                <li className="sidebar_string sidebar-disabled">♙ <span>Teams</span><small>Soon</small></li>
                 <li className="sidebar_string"><Link to="/settings">⚙ <span>Settings</span></Link></li>
             </ul>
             <div className="sidebar-foot"><i/>All systems normal</div>
