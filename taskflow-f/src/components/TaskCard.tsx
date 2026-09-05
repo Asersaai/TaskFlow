@@ -90,12 +90,14 @@ function TaskCard(card:TaskCardProps){
                     <div className="modal_content" onClick={(e) => e.stopPropagation()}>
                         <h2>Изменить задачу</h2>
                         <form onSubmit={handleSubmit}>
-                            <div >
-                                <input required type="text"  placeholder={"title..."} value={title} onChange={(e) => setTitle(e.target.value)}/>
+                            <div className="settings-field">
+                                <label htmlFor={`edit-task-title-${card.id}`}>Title</label>
+                                <input id={`edit-task-title-${card.id}`} required type="text" value={title} onChange={(e) => setTitle(e.target.value)}/>
 
                             </div>
-                            <div >
-                                <input required type="text"  placeholder={"description..."}  value={description}
+                            <div className="settings-field">
+                                <label htmlFor={`edit-task-description-${card.id}`}>Description</label>
+                                <input id={`edit-task-description-${card.id}`} required type="text" value={description}
                                        onChange={(e) => setDescription(e.target.value)}/>
 
                             </div>

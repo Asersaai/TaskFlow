@@ -1,0 +1,13 @@
+.settings-card{gap:24px}
+.settings-card>div{flex:1}
+.settings-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+.settings-field{display:flex;flex-direction:column;gap:7px}
+.settings-field label{color:#536159;font-size:13px;font-weight:700}
+.settings-field input{width:100%;height:44px;padding:0 12px;background:#f8faf8;border:1px solid #dce4de;border-radius:10px;outline:none}
+.settings-field input:focus{background:#fff;border-color:#21865a;box-shadow:0 0 0 4px rgba(33,134,90,.1)}
+.settings-pill{border:0}
+.settings-danger{color:#9d3c3c;background:#fff0f0}
+.settings-message{margin-top:16px;color:#21865a}
+.settings-error{margin-top:16px;color:#b34b4b}
+.modal_content .modal-close{display:block;margin:20px 0 0 auto}
+@media(max-width:620px){.settings-card{align-items:stretch;flex-direction:column}.settings-fields{grid-template-columns:1fr}.settings-pill{align-self:flex-start}}

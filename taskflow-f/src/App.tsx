@@ -10,6 +10,7 @@ import Tasks from "./pages/Tasks.tsx";
 import Dashboard from "./pages/Dashboard.tsx";
 import Settings from "./pages/Settings.tsx";
 import ProtectedRoute from "./ProtectedRoute.tsx";
+import Error404Page from "./pages/error/404.tsx";
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
                             <Route path="/" element={<Login />} />
                             <Route path="/login" element={<Login />} />
                             <Route path="/register" element={<Register />} />
+                            <Route path="*" element={<Error404Page />} />
                         </Route>
 
                         <Route element={<ProtectedRoute>

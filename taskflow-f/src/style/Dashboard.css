@@ -1,0 +1,7 @@
+.stat-card{position:relative;overflow:hidden;transition:color .25s,background .25s,border-color .25s,transform .25s,box-shadow .25s}
+.stat-card:hover{transform:translateY(-4px);box-shadow:0 16px 36px rgba(26,48,38,.12)}
+.stat-card strong{font-size:42px!important;line-height:1}
+.stat-card:hover span,.stat-card:hover p{color:inherit}
+.stat-completed:hover{color:#fff;background:#21865a;border-color:#21865a}
+.stat-total:hover{color:#fff;background:#66716b;border-color:#66716b}
+.stat-pending:hover{color:#fff;background:#b84a4a;border-color:#b84a4a}

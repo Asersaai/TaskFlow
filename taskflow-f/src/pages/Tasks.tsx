@@ -2,6 +2,8 @@ import { useState, useEffect,type FormEvent } from "react";
 import TaskCard from "../components/TaskCard.tsx";
 import "../style/Tasks.css";
 import {api} from "../api/api.ts";
+import {useOutletContext} from "react-router-dom";
+import type {AppOutletContext} from "../layouts/AppLayout.tsx";
 
 interface Task {
     id: number;
@@ -11,6 +13,7 @@ interface Task {
 }
 
 function Tasks() {
+    const {refreshUser} = useOutletContext<AppOutletContext>();
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -20,7 +23,8 @@ function Tasks() {
     const fetchTasks=async () => {
         try{
             const responce= await api.get("/task");
-            setTasks(responce.data)
+            setTasks(responce.data);
+            await refreshUser();
         }catch (error){
             console.log("Ошибка при получении задач:",error)
         }
@@ -60,12 +64,13 @@ function Tasks() {
                     <h1>Tasks Board</h1>
                 </div>
                 <div className="continer_tasks_top_button" onClick={() => setIsOpen(true)}>
-                    <button >+</button>
+                    <button type="button" aria-label="Add task">+</button>
 
                 </div>
             </div>
 
             <div className="task-list">
+                {tasks.length === 0 && <p className="task-list-empty">No tasks yet</p>}
                 {tasks.map((task) => (
                     <TaskCard
                         key={task.id}
@@ -84,13 +89,13 @@ function Tasks() {
                         <h2>Добавить новую задачу</h2>
                         <form onSubmit={handleSubmit}>
                             <div className="input-group">
-                                <input required type="text" className="input" placeholder=" " value={title} onChange={(e) => setTitle(e.target.value)}/>
-                                <label className="user-label">title</label>
+                                <input id="new-task-title" required type="text" className="input" placeholder=" " value={title} onChange={(e) => setTitle(e.target.value)}/>
+                                <label className="user-label" htmlFor="new-task-title">Title</label>
                             </div>
                             <div className="input-group">
-                                <input required type="text" className="input" placeholder=" "  value={description}
+                                <input id="new-task-description" required type="text" className="input" placeholder=" "  value={description}
                                        onChange={(e) => setDescription(e.target.value)}/>
-                                <label className="user-label">description</label>
+                                <label className="user-label" htmlFor="new-task-description">Description</label>
                             </div>
                             <div className="modal_button_post_or_exit">
                                 <button className="modal_button_exit" type="button" onClick={() => setIsOpen(false)}>Закрыть</button>

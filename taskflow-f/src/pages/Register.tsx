@@ -35,21 +35,38 @@ function Register(){
 
     return(
         <div>
-            <h1>Register</h1>
-            {errorMessage && <p>{errorMessage}</p>}
+            <h2>Register</h2>
+            {errorMessage && <p role="alert">{errorMessage}</p>}
             <form onSubmit={handleSubmit}>
                 <div className={"login_card"}>
+                    <label htmlFor="register-name">Name</label>
                     <input
+                    id="register-name"
                     type="text"
+                    name="name"
+                    autoComplete="name"
+                    minLength={3}
+                    required
                     value={name}
                     onChange={(e) =>setName(e.target.value)}/>
+                    <label htmlFor="register-email">Email</label>
                     <input
+                        id="register-email"
                         type="email"
+                        name="email"
+                        autoComplete="email"
+                        required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
+                    <label htmlFor="register-password">Password</label>
                     <input
+                        id="register-password"
                         type="password"
+                        name="password"
+                        autoComplete="new-password"
+                        minLength={6}
+                        required
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                     />

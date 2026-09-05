@@ -59,6 +59,7 @@ public class TaskService {
         }
         if (completed != null) {
             task.setCompleted(completed);
+
         }
     }
 

@@ -3,6 +3,7 @@ package com.asersaai.taskflowb.config;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,6 +17,9 @@ import java.util.List;
 
 @Configuration
 public class SecurityConfig {
+
+    @Value("${app.cors.allowed-origin-patterns:http://localhost:*,http://127.0.0.1:*}")
+    private List<String> allowedOriginPatterns;
 
 
     @Bean
@@ -60,9 +64,7 @@ public class SecurityConfig {
 
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
-        );
+        configuration.setAllowedOriginPatterns(allowedOriginPatterns);
 
         configuration.setAllowedMethods(
                 List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")

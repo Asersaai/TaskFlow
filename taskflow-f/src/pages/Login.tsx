@@ -31,17 +31,28 @@ function Login(){
 
     return(
         <div>
-        <h1>Login</h1>
-            {errorMessage && <p>{errorMessage}</p>}
+        <h2>Login</h2>
+            {errorMessage && <p role="alert">{errorMessage}</p>}
         <form onSubmit={handleSubmit}>
             <div className={"login_card"}>
+            <label htmlFor="login-email">Email</label>
             <input
+            id="login-email"
             type="email"
+            name="email"
+            autoComplete="email"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             />
-            <input
+                <label htmlFor="login-password">Password</label>
+                <input
+                id="login-password"
                 type="password"
+                name="password"
+                autoComplete="current-password"
+                minLength={6}
+                required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
             />
