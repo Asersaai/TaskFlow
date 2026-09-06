@@ -2,12 +2,15 @@ import axios from "axios";
 import { useAuthStore } from "../store/authStore";
 
 
-
+const API_URL = import.meta.env.VITE_API_URL;
+if (!API_URL) {
+    throw new Error("VITE_API_URL is not configured");
+}
 export const api = axios.create({
-    baseURL: "http://localhost:8080/api",
+    baseURL: API_URL
 });
 export const publicApi = axios.create({
-    baseURL:"http://localhost:8080/api"
+    baseURL:API_URL
 })
 
 api.interceptors.request.use((config)=> {

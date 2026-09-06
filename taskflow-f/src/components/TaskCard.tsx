@@ -22,13 +22,13 @@ function TaskCard(card:TaskCardProps){
         e.preventDefault()
         try {
             const nextCompleted = !completed;
-            setCompleted(nextCompleted);
             await api.patch(`/task/${card.id}`,{
                 completed: nextCompleted
             })
             if (card.onUpdate){
                 card.onUpdate(card.id);
             }
+            setCompleted(nextCompleted);
         }catch (error){
             console.log(error)
         }

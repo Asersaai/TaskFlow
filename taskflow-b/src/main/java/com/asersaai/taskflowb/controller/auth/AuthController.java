@@ -47,8 +47,11 @@ public class AuthController {
         }
 
         String email=jwtService.extractEmail(refresh.refreshToken());
-
-       return new LoginResponse(jwtService.generateToken(email), /*jwtService.generateRefreshToken(email)*/ refresh.refreshToken());
+        User user = userService.findUserByEmail(email)
+                .orElseThrow(
+                        () -> new BadCredentialsException("Invalid refresh token")
+                );
+       return new LoginResponse(jwtService.generateToken(user.getEmail()), refresh.refreshToken());
     }
 
 
