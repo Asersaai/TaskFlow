@@ -162,6 +162,12 @@ Task and account routes require an access token in the request header:
 Authorization: Bearer <access-token>
 ```
 
+The task list supports pagination and sorting:
+
+```http
+GET /api/task?page=0&size=5&sort=id,asc
+```
+
 ## Project structure
 
 ```text

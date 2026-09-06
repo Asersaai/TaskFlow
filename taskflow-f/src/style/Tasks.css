@@ -20,6 +20,7 @@
     background:#176d48;
     transform:translateY(-2px)}
 .continer_tasks_top_button button{color:inherit;background:none;border:0;font-size:22px}
+.tasks-pagination{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:24px}.tasks-pagination button{padding:10px 15px;border:0;border-radius:10px;background:#21865a;color:#fff;font-weight:700}.tasks-pagination span{color:#5f6e66;font-size:14px;font-weight:700}.tasks-pagination button:disabled{cursor:not-allowed;opacity:.45}
 .modal_overlay{position:fixed;
     inset:0;z-index:1000;
     display:grid;

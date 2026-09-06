@@ -1,17 +1,18 @@
 package com.asersaai.taskflowb.controller;
 
 import com.asersaai.taskflowb.dto.request.CreateTaskRequest;
-import com.asersaai.taskflowb.dto.response.AccessToken;
 import com.asersaai.taskflowb.dto.response.TaskResponse;
 import com.asersaai.taskflowb.dto.request.UpdateTaskRequest;
 import com.asersaai.taskflowb.service.TaskService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 @RestController
 @RequestMapping("/api")
@@ -27,8 +28,12 @@ public class TaskController {
 
 
     @GetMapping("/task")
-    public List<TaskResponse> getTasks(){
-        return taskService.getTasks();
+    public Page<TaskResponse> getTasks(@PageableDefault(
+            size = 5,
+            sort = "id",
+            direction = Sort.Direction.ASC
+    ) Pageable pageable){
+        return taskService.getTasks(pageable);
     }
 
 

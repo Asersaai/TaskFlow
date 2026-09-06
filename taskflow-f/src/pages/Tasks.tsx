@@ -1,9 +1,9 @@
-import { useState, useEffect,type FormEvent } from "react";
-import TaskCard from "../components/TaskCard.tsx";
-import "../style/Tasks.css";
-import {api} from "../api/api.ts";
+import {useCallback, useEffect, useState, type FormEvent} from "react";
 import {useOutletContext} from "react-router-dom";
+import {api} from "../api/api.ts";
+import TaskCard from "../components/TaskCard.tsx";
 import type {AppOutletContext} from "../layouts/AppLayout.tsx";
+import "../style/Tasks.css";
 
 interface Task {
     id: number;
@@ -12,60 +12,64 @@ interface Task {
     completed: boolean;
 }
 
+interface TaskPage {
+    content: Task[];
+    totalPages: number;
+}
+
 function Tasks() {
     const {refreshUser} = useOutletContext<AppOutletContext>();
-    const [title, setTitle] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
+    const [title, setTitle] = useState("");
+    const [description, setDescription] = useState("");
     const [tasks, setTasks] = useState<Task[]>([]);
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(0);
 
+    const fetchTasks = useCallback(async (pageNumber: number) => {
+        try {
+            const response = await api.get<TaskPage>("/task", {
+                params: {page: pageNumber, size: 5},
+            });
 
-    const fetchTasks=async () => {
-        try{
-            const responce= await api.get("/task");
-            setTasks(responce.data);
+            if (response.data.totalPages > 0 && pageNumber >= response.data.totalPages) {
+                setPage(response.data.totalPages - 1);
+                return;
+            }
+
+            setTasks(response.data.content);
+            setTotalPages(response.data.totalPages);
             await refreshUser();
-        }catch (error){
-            console.log("Ошибка при получении задач:",error)
+        } catch (error) {
+            console.log("Ошибка при получении задач:", error);
         }
-    }
+    }, [refreshUser]);
 
-    const handleSubmit= async (e: FormEvent) =>{
+    useEffect(() => {
+        // The state updates happen after the HTTP request resolves.
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        void fetchTasks(page);
+    }, [fetchTasks, page]);
+
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
         try {
-            await api.post("/task",{
-                title,
-                description
-            });
+            await api.post("/task", {title, description});
             setTitle("");
             setDescription("");
             setIsOpen(false);
-
-            fetchTasks()
-        }catch (error) {
+            await fetchTasks(page);
+        } catch (error) {
             console.error("Ошибка при отправке:", error);
-        }}
-
-
-
-
-    useEffect(() => {
-        api.get("/task")
-            .then((response) => setTasks(response.data))
-            .catch((error) =>
-                console.log("Ошибка при получении задач:", error)
-            );
-    }, []);
+        }
+    };
 
     return (
         <section className="tasks-page">
             <div className="continer_tasks_top">
-                <div>
-                    <h1>Tasks Board</h1>
-                </div>
+                <div><h1>Tasks Board</h1></div>
                 <div className="continer_tasks_top_button" onClick={() => setIsOpen(true)}>
                     <button type="button" aria-label="Add task">+</button>
-
                 </div>
             </div>
 
@@ -78,10 +82,22 @@ function Tasks() {
                         title={task.title}
                         description={task.description}
                         completed={task.completed}
-                        onUpdate={fetchTasks}
+                        onUpdate={() => void fetchTasks(page)}
                     />
                 ))}
             </div>
+
+            {totalPages > 1 && (
+                <nav className="tasks-pagination" aria-label="Task pages">
+                    <button type="button" disabled={page === 0} onClick={() => setPage((current) => Math.max(0, current - 1))}>
+                        Previous
+                    </button>
+                    <span>Page {page + 1} of {totalPages}</span>
+                    <button type="button" disabled={page + 1 >= totalPages} onClick={() => setPage((current) => current + 1)}>
+                        Next
+                    </button>
+                </nav>
+            )}
 
             {isOpen && (
                 <div className="modal_overlay" onClick={() => setIsOpen(false)}>
@@ -93,19 +109,17 @@ function Tasks() {
                                 <label className="user-label" htmlFor="new-task-title">Title</label>
                             </div>
                             <div className="input-group">
-                                <input id="new-task-description" required type="text" className="input" placeholder=" "  value={description}
-                                       onChange={(e) => setDescription(e.target.value)}/>
+                                <input id="new-task-description" required type="text" className="input" placeholder=" " value={description} onChange={(e) => setDescription(e.target.value)}/>
                                 <label className="user-label" htmlFor="new-task-description">Description</label>
                             </div>
                             <div className="modal_button_post_or_exit">
                                 <button className="modal_button_exit" type="button" onClick={() => setIsOpen(false)}>Закрыть</button>
-                                <button className="modal_button_post" type="submit" >Отправить</button>
+                                <button className="modal_button_post" type="submit">Отправить</button>
                             </div>
                         </form>
                     </div>
                 </div>
             )}
-
         </section>
     );
 }

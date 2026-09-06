@@ -6,9 +6,10 @@ import com.asersaai.taskflowb.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 public class TaskService {
@@ -22,9 +23,8 @@ public class TaskService {
 
     }
 
-    public List<TaskResponse> getTasks( ){
-
-        return taskRepository.findTasksByUserOrderByIdAsc(userService.getCurrentUser());
+    public Page<TaskResponse> getTasks(Pageable pageable){
+        return taskRepository.findTasksByUser(userService.getCurrentUser(), pageable);
     }
 
     public void saveTask(String title,String description){
